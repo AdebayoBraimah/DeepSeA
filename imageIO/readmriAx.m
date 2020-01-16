@@ -11,6 +11,7 @@ num_dicom = numel(dicomlist);
 
 fprintf('All %d slices, sorting the %03d', num_dicom, 1);
 
+% dicomfile = dicomlist(1).name;
 dicomfile = dicomlist(1).name;
 dicomheader = dicominfo(fullfile(dicomdir, dicomfile));
 sliceLocations = zeros(num_dicom,1);
@@ -63,7 +64,8 @@ if numel(realthickness)>1
     error('Inconsistent SliceLocation and/or SliceThickness, or missing slice(s).');
 end
 if abs(realthickness) ~= round(dicomheader.SliceThickness,2)
-    error('Inconsistency between SliceLocation and SliceThickness');
+    realthickness = (1/2)*round(dicomheader.SliceThickness,2);
+    % error('Inconsistency between SliceLocation and SliceThickness');
 end
 % allocate memeory for images
 slices = zeros(dicomheader.Rows, dicomheader.Columns,num_dicom);
