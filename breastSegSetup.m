@@ -26,15 +26,17 @@ function breastSegSetup(dicomDir, resultsDir, subID, varargin)
 % 
 % Additional help information can be found from the original source code
 % and wholeBreastSegment.m
+% 
+% Adebayo Braimah 15 Oct. 2019
 
 % Enable environmental variables and paths
 MR_startup;
 
 % Parse optional arguments
 p = inputParser;
-addParameter(p, 'orientation', '', @ischar);
+addParameter(p, 'orientation', 'ax', @ischar);
 addParameter(p, 'vs', []); % isotropic voxel size in mm
-addParameter(p, 'latBnds', [], @islogical);
+addParameter(p, 'latBnds', false, @islogical);
 addParameter(p, 'botBnds', false, @islogical);
 addParameter(p, 'medBnds', false, @islogical);
 
@@ -45,6 +47,12 @@ vs = p.Results.vs;
 latBnds = p.Results.latBnds;
 botBnds = p.Results.botBnds;
 medBnds = p.Results.medBnds;
+
+% Convert subject ID from string to character
+subID = char(subID);
+
+% Convert voxel size from string to float
+vs = str2num(vs);
 
 % Determine image orientation (if specified)
 if ~isempty(orientation) % if user gives imaging orientation
@@ -63,12 +71,12 @@ if isempty(vs)
 end
 
 % Perform Breast Segmentation
-segdata = wholeBreastSegment(dicomDir,resultsDir,subID,...
+segdata = wholeBreastSegment(dicomDir,resultsDir,'ID',subID,...
     'Orientation',orientation,'VoxelSize',vs,...
     'LateralBounds',latBnds,'BottomBound',botBnds,...
     'MedialBounds',medBnds);
 
 % Exit once finished
-% exit
+exit
 
 end
