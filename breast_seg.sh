@@ -56,6 +56,8 @@ Optional arguments:
 NOTE: 
 - Creates a spreadsheet to aggregrate results
 - Creates subject video of segmentation images
+- This wrapper script SHOULD NOT be ran in parallel
+  as DeepSeA makes uses MATLAB's parallel pool.
 
 ----------------------------------------
 
@@ -254,7 +256,7 @@ csv_file=${results_dir}/cohort_results.csv
 img_dir=${results_dir}/${sub_id}/wholeBreast
 vid_out=${results_dir}/cohort_seg/${sub_id}_seg_vid.mp4
 
-if [[ -d ${results_dir}/cohort_seg ]]; then
+if [[ ! -d ${results_dir}/cohort_seg ]]; then
   mkdir -p ${results_dir}/cohort_seg
 fi
 
